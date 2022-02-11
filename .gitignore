@@ -1,0 +1,4 @@
+.nyc_output
+.env.test
+.env.development
+node_modules
