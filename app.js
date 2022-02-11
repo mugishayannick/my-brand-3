@@ -1,5 +1,4 @@
-import dotenv from 'dotenv-flow'
-dotenv.config();
+import 'dotenv/config'
 import express from "express";
 import Mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
