@@ -41,6 +41,24 @@ const options = {
             url:"http:localhost:8000/"
         }
     ],
+
+     //   paths: {},
+    // //   security: [
+    // //     {
+    // //       bearerAuth: [],
+    // //     },
+    // //   ],
+    // //   components: {
+    // //       securitySchemes: {
+    // //         bearerAuth: {
+    // //           type: 'http',
+    // //           scheme: 'bearer',
+    // //           bearerFormat: 'JWT',
+    // //           name: 'bearerAuth',
+    // //           in: 'header'
+    // //         }
+    // //       }}
+        //   }
     
     
 };
@@ -63,23 +81,23 @@ const options = {
 //             url:"http:localhost:8000/"
 //         }
 //     ],
-//       paths: {},
-//       security: [
-//         {
-//           bearerAuth: [],
-//         },
-//       ],
-//       components: {
-//           securitySchemes: {
-//             bearerAuth: {
-//               type: 'http',
-//               scheme: 'bearer',
-//               bearerFormat: 'JWT',
-//               name: 'bearerAuth',
-//               in: 'header'
-//             }
-//           }}
-//           }
+    // //   paths: {},
+    // //   security: [
+    // //     {
+    // //       bearerAuth: [],
+    // //     },
+    // //   ],
+    // //   components: {
+    // //       securitySchemes: {
+    // //         bearerAuth: {
+    // //           type: 'http',
+    // //           scheme: 'bearer',
+    // //           bearerFormat: 'JWT',
+    // //           name: 'bearerAuth',
+    // //           in: 'header'
+    // //         }
+    // //       }}
+        //   }
 //   };
 const specs = swaggerJsDoc(options)
 
