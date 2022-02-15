@@ -1,17 +1,41 @@
 import  express  from 'express';
 import {login, signup} from '../controllers/auth.js';
-
 const router = express.Router()
-/** 
-@swagger
-* components:
-*      securitySchemes:
-*          bearerAuth:
-*              type: http
-*              scheme: bearer
-*              bearerFormat: JWT
-*      schemas:
-*          dbUsers: 
+
+
+
+// User Auth Route 
+/**
+ * @swagger
+ * components:
+ *      securitySchemes:
+ *          bearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: JWT
+ *      responses: 
+ *          UnauthorizedError:
+ *              description: User does not have access to perform the action
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                         type: object
+ *                         properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: 'Unauthorized'
+ *          NotFoundError:
+ *              description: Not Found
+ *              content: 
+ *                  application/json: 
+ *                      schema: 
+ *                          type: object
+ *                          properties: 
+ *                              message: 
+ *                                  type: string 
+ *                                  example: 'Not Found'
+ *      schemas:
+ *          User: 
 *              type: object
 *              required: 
 *                  - id
@@ -39,16 +63,15 @@ const router = express.Router()
 *                  confirmPassword: 
 *                      type: string
 *                      description: User Password Confirmation
-* 
-*/
+ * 
+ */
 
 /**
-* @swagger
-* tags: 
-*      name: Authentication & Authorization
+ * @swagger
+ * tags: 
+ *      name: Authentication & Authorization
 *      description: User Roles, User Authentication & Authorisation  
-*/
-
+ */
 
 /**
   * @swagger
@@ -61,41 +84,42 @@ const router = express.Router()
   *       content:
   *         application/json:
   *           schema:
-  *             $ref: '#/components/schemas/dbUsers'
+  *             $ref: '#/components/schemas/User'
   *     responses:
   *       201:
   *         description: User Created Successfully 
   *         content:
   *           application/json:
   *             schema:
-  *               $ref: '#/components/schemas/dbUsers'
-  *       500:
-  *         description: Server Error
+  *               $ref: '#/components/schemas/User'
+  *       400:
+  *         description: Bad Request
   */
-
 router.post('/signup', signup);
+
+
 /**
-   * @swagger
-   * /api/auth/login:
-   *   post:
-   *     summary: User Login
-   *     tags: [Authentication & Authorization]
-   *     requestBody:
-   *       required: true
-   *       content:
-   *         application/json:
-   *           schema:
-   *             $ref: '#/components/schemas/dbUsers'
-   *     responses:
-   *       201:
-   *         description: User Logged In 
-   *         content:
-   *           application/json:
-   *             schema:
-   *               $ref: '#/components/schemas/dbUsers'
-   *       500:
-   *         description: Server Error
-   */
+  * @swagger
+  * /api/auth/login:
+  *   post:
+  *     summary: User Login
+  *     tags: [Authentication & Authorization]
+  *     requestBody:
+  *       required: true
+  *       content:
+  *         application/json:
+  *           schema:
+  *             $ref: '#/components/schemas/User'
+  *     responses:
+  *       201:
+  *         description: User Logged In Successfully 
+  *         content:
+  *           application/json:
+  *             schema:
+  *               $ref: '#/components/schemas/User'
+  *       400:
+  *         description: Bad Request
+  */
 // login Route
 router.post('/login', login);
 

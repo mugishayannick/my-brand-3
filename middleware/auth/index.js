@@ -1,8 +1,4 @@
-// const { promisify } = require("util");
 import jwt from "jsonwebtoken";
-import {config} from "dotenv";
-
-config();
 
 // DB
 // const User = require("../../models/user");

@@ -42,7 +42,6 @@ export const getOneArticle =(req, res, next) => {
 
 export const modifyArticle = (req, res, next) => {
     const article = Article({
-        _id: req.params.id,
         title: req.body.title,
         content: req.body.content,
         imageUrl: req.body.imageUrl,

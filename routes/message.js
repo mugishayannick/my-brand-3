@@ -1,114 +1,143 @@
 import express from "express";
 const router = express.Router();
 import { getAllMessage,getOneMessage,createMessage } from "../controllers/message.js"
+import  {authMiddleware} from "../middleware/auth/index.js";
 
+// Message CRUD Route 
 /**
  * @swagger
  * components:
- *  schemas: 
- *    message:
- *      type: object
- *      required:
- *          - name
- *          - email
- *          - message
- *      properties:
- *          id:
- *            type: string
- *            description: The auto-generated id of the message
- *          name:
- *            type: string
- *            description: The name of The sender
- *          email:
- *            type: string
- *            description: The email of The sender
- *          message:
- *            type: string
- *            description: The message of The sender
- *          example:
- *            id: d5fe_asz
- *            name: yannick
- *            email: yannick23@gmail.com
- *            message: who is Yannick
- *            
+ *      securitySchemes:
+ *          bearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: JWT
+ *      responses: 
+ *          UnauthorizedError:
+ *              description: User does not have access to perform the action
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                         type: object
+ *                         properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: 'Unauthorized'
+ *          NotFoundError:
+ *              description: Not Found
+ *              content: 
+ *                  application/json: 
+ *                      schema: 
+ *                          type: object
+ *                          properties: 
+ *                              message: 
+ *                                  type: string 
+ *                                  example: 'Not Found'
+ *      schemas:
+ *          Message: 
+ *              type: object
+ *              required: 
+ *                  - name
+ *                  - email
+ *                  - message             
+ *              properties:
+ *                id:
+ *                    type: string
+ *                    description: The auto-generated id of the message
+ *                name:
+ *                    type: string
+ *                    description: The name of The sender
+ *                email:
+ *                    type: string
+ *                    description: The email of The sender
+ *                message:
+ *                    type: string
+ *                    description: The message of The sender
+ * 
  */
 
 /**
  * @swagger
- * tags:
- *   name: Messages
- *   description: The messages managing API
- *   
+ * tags: 
+ *      name: Messages
+ *      description: The Messages managing API
  */
 
-/**
- * @swagger
- * /api/message:
- *    get:
- *      summary: Returns the list of all the messages
- *      tags: [ Messages ]
- *      responses:
- *         200:
- *           description: The list of the messages
- *           content:
- *              application/json:
- *                 schema:
- *                     type: array
- *                     items:
- *                        $ref: '#/components/schemas/message'
- *                     
- */
-
- router.get('/', getAllMessage);
-
- /**
- * @swagger
- * /api/message/{id}:
- *    get:
- *      summary: Get the message by id
- *      tags: [ Messages ]
- *      parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The message id
- *      responses:
- *          200:
- *            description: The message description by id  
- *            contents:
- *              application/json:
- *                schema:
- *                   $ref: '#/components/schemas/message'
- *          400:
- *            description: The message was not found         
- */
-  router.get('/:id',getOneMessage);
 /**
  * @swagger
  * /api/message:
- *   post:
- *     summary: Create a new message
- *     tags: [ Messages ]
- *     requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *               $ref:'#/components/schemas/message'
- *     responses:
- *       200:
- *         description: The message was successfully created
- *         content:
- *            application/json:
- *               schema:
- *                 $ref: '#/components/schemas/message'
- *       500:
- *         description: some server error
- *       
+ *      get:
+ *          tags: [Messages]
+ *          security:
+*             - bearerAuth: []
+ *          summary: Returns A List Of All Messages
+ *          responses: 
+ *              200:
+ *                  description: List of All Messages
+ *                  content: 
+ *                      application/json: 
+ *                          schema: 
+ *                              type: array
+ *                              items: 
+ *                                  $ref: '#/components/schemas/Message'
  */
+ router.get('/', authMiddleware, getAllMessage);
 
-router.post('/', createMessage);
+
+/**
+   * @swagger
+   * /api/message/{id}:
+   *   get:
+   *     summary: Get Message By Id
+   *     tags: [ Messages ]
+   *     security:
+   *        - bearerAuth: [] 
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: Message Id
+   *     responses:
+   *       200:
+   *         description: Message
+   *         contens:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Message'
+   *       404:
+   *         description: Message not found
+   */
+  router.get('/:id', authMiddleware, getOneMessage);
+
+
+
+/**
+   * @swagger
+   * /api/message:
+   *   post:
+   *     summary: Create A New Message
+   *     tags: [Messages]
+   *     security:
+   *        - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/Message'
+   *     responses:
+   *       201:
+   *         description: New Message Created Successfully 
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/Message'
+   *       500:
+   *         description: Server Error
+   */
+
+router.post('/', authMiddleware, createMessage);
  
 export default router;

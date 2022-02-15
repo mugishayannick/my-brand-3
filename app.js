@@ -1,77 +1,63 @@
-import dotenv from 'dotenv-flow'
-dotenv.config();
+import dotenvFlow from 'dotenv-flow'
+dotenvFlow.config();
 import express from "express";
 import Mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import messageRoutes from "./routes/message.js";
 import articleRoutes from "./routes/article.js"
-// import serve  from "swagger-ui-express";
 import auth from './routes/auth.js';
 
 
 
+const app = express()
+app.use(express.json());
 
-
-
-Mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true, })
-.then(() => {
-    console.log('Successfully connected to Mongoose !');
-})
-.catch((error) => {
-    console.log('Unable to connect to Mongoose !');
-    console.error(error);
-})
-
-
-
-
+// API Swager Documentation
 
 const options = {
-    apis: ["./routes/*.js"],
     definition: {
         openapi: "3.0.0",
+        info: {
+            title: "Portfolio API",
+            version: "1.0.0",
+            description: "This API Will Manage:\n 1. CRUD Operations For The Blog & Message Querries.\n 2. User Roles, User Authentication & Authorisation"
+        },
+        servers:[{url: 'http://localhost:8000'},{url: 'https://personal-portofolio1.herokuapp.com/'}]
     },
-    info: {
-        title: "Message API",
-        version: "1.0.0",
-        description: "A simple express message API"
-    },
-    
-    servers: [
-        {
-            url:"http:localhost:8000/"
-        }
-    ],
+    apis: ['./routes/*.js'],
+}
 
-    };
-
-     
+const apiSpecs = swaggerJsDoc(options)
 
 
+/**
+ * Database Connetcion
+ */
 
-const specs = swaggerJsDoc(options)
+const dbConnetion = async () => {
+    Mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTopology: true, })
+            .then(() => {
+                app.listen(process.env.PORT || 8000, () => {
+                    console.log('App Has Started')
+                    app.emit('appStarted')
+                })
+                console.log('MongoDb Atlas Connected')
+                console.log('Listening On Port: ' + process.env.PORT)
+            })
+            .catch((error) => {
+                console.log('Unable to connect to MongoDb Atlas!');
+                console.error(error);
+            })
+}
+dbConnetion()
 
-const app = express()
-const port = (process.env.PORT || '8000')
+// Using Swagger API Documentation
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiSpecs))
 
 
-
-app.listen(port, (err) => {
-    if (err) {
-        return console.log('something bad happened', err)
-    }
-    console.log('server is listening on port 8000')
-});
-app.use(express.json());
 app.use('/api/message',messageRoutes);
 app.use('/api/post',articleRoutes);
-
-
-
-
-
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
 app.use('/api/auth', auth);
 
 
