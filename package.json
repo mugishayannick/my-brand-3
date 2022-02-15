@@ -39,13 +39,8 @@
         "cookie-parser": "^1.4.6",
         "dotenv-flow": "^3.2.0",
         "dotenv": "^16.0.0",
-<<<<<<< HEAD
         "express": "^4.17.2",
         "jsonwebtoken": "^8.5.1",
-        "mongoose": "^6.2.0",
-=======
-        "jsonwebtoken": "^8.5.1",
->>>>>>> f48149cddbeec7ff81289234b917012fffcb9cd6
         "nodemon": "^2.0.15",
         "swagger-jsdoc": "^6.1.0",
         "swagger-ui-express": "^4.3.0",
