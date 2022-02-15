@@ -1,4 +1,5 @@
-import 'dotenv/config'
+import dotenv from 'dotenv-flow'
+dotenv.config();
 import express from "express";
 import Mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
@@ -24,6 +25,8 @@ Mongoose.connect(process.env.DATABASE_URI, { useNewUrlParser: true, useUnifiedTo
 
 
 
+
+
 const options = {
     apis: ["./routes/*.js"],
     definition: {
@@ -41,66 +44,25 @@ const options = {
         }
     ],
 
-     //   paths: {},
-    // //   security: [
-    // //     {
-    // //       bearerAuth: [],
-    // //     },
-    // //   ],
-    // //   components: {
-    // //       securitySchemes: {
-    // //         bearerAuth: {
-    // //           type: 'http',
-    // //           scheme: 'bearer',
-    // //           bearerFormat: 'JWT',
-    // //           name: 'bearerAuth',
-    // //           in: 'header'
-    // //         }
-    // //       }}
-        //   }
-    
-    
-};
+    };
+
+     
 
 
-// const options = {
-//     //Those are the specs of swagger
-//     apis : ["./routes/*.js"],
-//     definition: {
-//        openapi: '3.0.0',
-//       info: {
-//         title: 'Yannick brand portfolio project api',
-//         version: '1.0.0',
-//         description:
-//           "API for my project which include the Article API, Message API it have all CRUD operations\
-//            authentication and its authorizations",
-//       },
-//       servers: [
-//         {
-//             url:"http:localhost:8000/"
-//         }
-//     ],
-    // //   paths: {},
-    // //   security: [
-    // //     {
-    // //       bearerAuth: [],
-    // //     },
-    // //   ],
-    // //   components: {
-    // //       securitySchemes: {
-    // //         bearerAuth: {
-    // //           type: 'http',
-    // //           scheme: 'bearer',
-    // //           bearerFormat: 'JWT',
-    // //           name: 'bearerAuth',
-    // //           in: 'header'
-    // //         }
-    // //       }}
-        //   }
-//   };
+
 const specs = swaggerJsDoc(options)
 
 const app = express()
+const port = (process.env.PORT || '8000')
+
+
+
+app.listen(port, (err) => {
+    if (err) {
+        return console.log('something bad happened', err)
+    }
+    console.log('server is listening on port 8000')
+});
 app.use(express.json());
 app.use('/api/message',messageRoutes);
 app.use('/api/post',articleRoutes);
@@ -115,4 +77,4 @@ app.use('/api/auth', auth);
 
 
 
-export  {app};
+export default app;

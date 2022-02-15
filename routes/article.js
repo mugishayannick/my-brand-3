@@ -1,4 +1,5 @@
 import express from "express";
+import auth from "registry-auth-token";
 const router = express.Router();
 import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle } from "../controllers/article.js";
 import  {authMiddleware} from "../middleware/auth/index.js";
@@ -118,7 +119,7 @@ router.post('/',authMiddleware, createArticle);
  *          400:
  *            description: The article was not found         
  */
-router.get('/:id', getOneArticle);
+router.get('/:id',authMiddleware, getOneArticle);
 
 /**
   * @swagger
