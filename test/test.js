@@ -1,12 +1,20 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-// import { resource, response } from '../app.js';
-import { app as server } from "../app.js";
+import  app  from "../app.js";
+
 
 //assertion style
+
 chai.should();
 
 chai.use(chaiHttp);
+const userReg = {
+     "firstName": "yannick",
+     "lastName": "mugi",
+     "email": "yannick@gmail.com",
+     "password": "yan123",
+     "confirmPassword": "yan123"
+}
 
 describe("test API", () => {
   /**
@@ -15,23 +23,18 @@ describe("test API", () => {
 
   describe("GET /api/post", () => {
     it("It should GET all the posts", (done) => {
-      chai
-        .request(server)
+      chai.request(app)
         .get("/api/post")
-        // .set({
-        //     Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
-        // })
         .end((err, response) => {
           response.should.have.status(200);
           response.body.should.be.a("array");
-          // response.body.length.should.be.equal(3);
           done();
         });
     });
 
     it("It should not GET all the posts", (done) => {
       chai
-        .request(server)
+        .request(app)
         .get("/api/pos")
         .end((err, response) => {
           response.should.have.status(404);
@@ -48,7 +51,7 @@ describe("test API", () => {
     it("It should create new post", (done) => {
 
       chai
-        .request(server)
+        .request(app)
         .post("/api/post")
         .set({
             Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
@@ -69,24 +72,16 @@ describe("test API", () => {
     });
     it("It should signup a user", (done) => {
         chai
-          .request(server)
+          .request(app)
           .post("/api/auth/signup")
-          // .set({
-          //     Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
-          // })
-          .send({
-            firstName: "yannick",
-            lastName: "mugisha",  
-            email: "axo@gmail.com",
-            password: "yan123",
-            confirmPassword: "yan123"
-          })
+          .send(userReg)
           .end((err, response) => {
             response.should.have.status(201);
-            // response.body.should.be.a('object');
-            
+            response.body.should.be.a('object');
+            console.log(userReg)
+            done();
           });
-        done();
+        
       });
   });
 });
@@ -98,7 +93,7 @@ describe("test API", () => {
 describe("LOGIN /api/auth/login", () => {
   it("It should login a user", (done) => {
     chai
-      .request(server)
+      .request(app)
       .post("/api/auth/login")
       // .set({
       //     Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
@@ -122,7 +117,7 @@ describe("LOGIN /api/auth/login", () => {
 describe("/GET api/message", () => {
   it(" should get messages ", (done) => {
     chai
-      .request(server)
+      .request(app)
       .get("/api/message")
       // .set('Authorization', 'JWT ' + token)
       .end((err, res) => {
@@ -133,7 +128,7 @@ describe("/GET api/message", () => {
   });
   it(" should not get messages ", (done) => {
     chai
-      .request(server)
+      .request(app)
       .get("/api/messag")
       .end((err, res) => {
         res.should.have.status(404);
@@ -154,7 +149,7 @@ describe("POST /api/message", () => {
     };
 
     chai
-      .request(server)
+      .request(app)
       .post("/api/message")
       .send(message)
       .end((err, res) => {
@@ -171,7 +166,7 @@ describe("POST /api/message", () => {
     };
 
     chai
-      .request(server)
+      .request(app)
       .post("/api/messag")
       .send(message)
       .end((err, res) => {
@@ -191,7 +186,7 @@ describe("DELETE /api/message", () => {
       };
   
       chai
-        .request(server)
+        .request(app)
         .delete("/api/message")
         .send(message)
         .end((err, res) => {
@@ -209,7 +204,7 @@ describe("DELETE /api/message", () => {
       };
   
       chai
-        .request(server)
+        .request(app)
         .delete("/api/messag")
         .send(message)
         .end((err, res) => {
@@ -220,31 +215,31 @@ describe("DELETE /api/message", () => {
     });
   });
 
-  describe("DELETE /api/post", () => {
-    // it(" should Delete a post", (done) => {
-    //   let post = {
-    //     title: "why",
-    //     content: "jdshfh",
-    //     image: "kdsc.pg",
-    //     userId: "dfkijviifv"
-    //   };
+  describe("DELETE /api/post/id", () => {
+    it(" should Delete a post by id", (done) => {
+      let post = {
+        title: "why",
+        content: "jdshfh",
+        image: "kdsc.pg",
+        userId: "dfkijviifv"
+      };
   
-    //   chai
-    //     .request(server)
-    //     .delete("/api/post")
-    //     .set({
-    //         Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
-    //       })
-    //     // .send(post)
+      chai
+        .request(app)
+        .delete("/api/post/id")
+        .set({
+            Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
+          })
+        .send(post)
         
-    //     .end((err, res) => {
-    //       res.should.have.status(201);
-    //       res.body.should.be.a("object");
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a("object");
           
-    //     });
-    //     done();
-    // });
-    it(" should not Delete a post", (done) => {
+        });
+        done();
+    });
+    it(" should not Delete a post by id", (done) => {
       let pos = {
         title: "why",
         content: "jdshfh",
@@ -253,8 +248,8 @@ describe("DELETE /api/message", () => {
       };
   
       chai
-        .request(server)
-        .delete("/api/pos")
+        .request(app)
+        .delete("/api/pos/id")
         .send(pos)
         .end((err, res) => {
           res.should.have.status(404);
@@ -263,4 +258,29 @@ describe("DELETE /api/message", () => {
       done();
     });
   });
-
+  describe("Patch /api/post/id", () => {
+    it(" should update a post by id", (done) => {
+      let post = {
+        title: "why",
+        content: "jdshfh",
+        image: "kdsc.pg",
+        userId: "dfkijviifv"
+      };
+  
+      chai
+        .request(app)
+        .delete("/api/post/id")
+        .set({
+            Authorization: `Bearer ${process.env.TEMP_TOKEN}`,
+          })
+        .send(post)
+        
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a("object");
+          
+        });
+        done();
+    });
+    
+})

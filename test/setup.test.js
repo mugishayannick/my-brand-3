@@ -1,4 +1,4 @@
-process.env.NODE_ENV= 'test'
+process.env.NODE_ENV='test'
 import user from '../models/user.js';
 import article from '../models/article.js'
 import message from '../models/message.js'

@@ -1,179 +1,217 @@
 import express from "express";
+import auth from "registry-auth-token";
 const router = express.Router();
 import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle } from "../controllers/article.js";
 import  {authMiddleware} from "../middleware/auth/index.js";
 
-
-
+// Blog CRUD Route 
 /**
  * @swagger
  * components:
- *  schemas: 
- *    post:
- *      type: object
- *      required:
- *          - title
- *          - content
- *          - imageUrl
- *          - userId
- *      properties:
- *          id:
- *            type: string
- *            description: The auto-generated id of the post
- *          title:
- *            type: string
- *            description: The title of The post
- *          content:
- *            type: string
- *            description: The content of The post
- *          imageUrl:
- *            type: string
- *            description: The image of The post
- *          userId:
- *            type: string
- *            description: The auto-generated userId of the post
- *          example:
- *            id: d5fe_asz
- *            title: why you
- *            content: skfjgksgkfsfkjf
- *            imageUrl: fisjgier.pg
- *            userId: 12324234_dskfk
- *            
+ *      securitySchemes:
+ *          bearerAuth:
+ *              type: http
+ *              scheme: bearer
+ *              bearerFormat: JWT
+ *      responses: 
+ *          UnauthorizedError:
+ *              description: User does not have access to perform the action
+ *              content: 
+ *                  application/json:
+ *                      schema:
+ *                         type: object
+ *                         properties:
+ *                              message:
+ *                                  type: string
+ *                                  example: 'Unauthorized'
+ *          NotFoundError:
+ *              description: Not Found
+ *              content: 
+ *                  application/json: 
+ *                      schema: 
+ *                          type: object
+ *                          properties: 
+ *                              message: 
+ *                                  type: string 
+ *                                  example: 'Not Found'
+ *      schemas:
+ *          article: 
+ *              type: object
+ *              required: 
+ *                  - title
+ *                  - content
+ *                  - imageUrl
+ *                  - userId                 
+ *              properties: 
+ *                  id: 
+ *                      type: string
+ *                      description: Auto Generated Id Of The Blog Article
+ *                  title: 
+ *                      type: string
+ *                      description: Title Of The Blog Article
+ *                  content: 
+ *                      type: string
+ *                      description: Article Content
+ *                  imageUrl: 
+ *                      type: number
+ *                      description: Date Article Was Created
+ *                  userId: 
+ *                      type: number
+ *                      description: Date Article Was Created
+ * 
  */
+
 /**
  * @swagger
- * tags:
- *   name: Articles
- *   description: The posts managing API
- *   
+ * tags: 
+ *      name: Articles
+ *      description: The posts managing API
  */
 
 /**
  * @swagger
  * /api/post:
- *    get:
- *      summary: Returns the list of all the articles
- *      tags: [ Articles ]
- *      responses:
- *         200:
- *           description: The list of the articles
- *           content:
- *              application/json:
- *                 schema:
- *                     type: array
- *                     items:
- *                        $ref: '#/components/schemas/post'
- *                     
+ *      get:
+ *          tags: [Articles]
+ *          summary: Returns A List Of All Articles
+ *          responses: 
+ *              200:
+ *                  description: List of All Blog Articles
+ *                  content: 
+ *                      application/json: 
+ *                          schema: 
+ *                              type: array
+ *                              items: 
+ *                                  $ref: '#/components/schemas/article'
  */
 router.get('/', getAllArticles);
 
 
 
 /**
- * @swagger
- * /api/post:
- *   post:
- *     summary: Create a new Article
- *     tags: [ Articles ]
- *     requestBody:
- *        required: true
- *        content:
- *          application/json:
- *            schema:
- *               $ref:'#/components/schemas/post'
- *     responses:
- *       200:
- *         description: The article was successfully created
- *         content:
- *            application/json:
- *               schema:
- *                 $ref: '#/components/schemas/post'
- *       500:
- *         description: some server error
- *       
- */
+   * @swagger
+   * /api/post:
+   *   post:
+   *     summary: Create A New Article
+   *     tags: [Articles]
+   *     security:
+   *        - bearerAuth: []
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           schema:
+   *             $ref: '#/components/schemas/article'
+   *     responses:
+   *       201:
+   *         description: New Article Created Successfully 
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/article'
+   *       500:
+   *         description: Server Error
+   */
 
-router.post('/',authMiddleware, createArticle);
+router.post('/', authMiddleware , createArticle);
 
- /**
- * @swagger
- * /api/post/{id}:
- *    get:
- *      summary: Get the article by id
- *      tags: [ Articles ]
- *      parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The article id
- *      responses:
- *          200:
- *            description: The article description by id  
- *            contents:
- *              application/json:
- *                schema:
- *                   $ref: '#/components/schemas/post'
- *          400:
- *            description: The article was not found         
- */
-router.get('/:id', getOneArticle);
+  /**
+   * @swagger
+   * /api/post/{id}:
+   *   get:
+   *     summary: Get An Article By ID
+   *     tags: [Articles]
+   *     security:
+   *        - bearerAuth: [] 
+   *     parameters:
+   *       - in: path
+   *         name: id
+   *         schema:
+   *           type: string
+   *         required: true
+   *         description: Article Id
+   *     responses:
+   *       200:
+   *         description: Article
+   *         contens:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/article'
+   *       404:
+   *         description: Message not found
+   */
+router.get('/:id',authMiddleware, getOneArticle);
 
-/**
-  * @swagger
-  * /api/post/{id}:
-  *   patch:
-  *     summary: update the article by id
-  *     tags: [Articles]
-  *     parameters:
-  *       - in: path
-  *         name: id
-  *         schema:
-  *           type: string
-  *         required: true
-  *         description: The article id
-  *     requestBody:
-  *         required: true
-  *         content:
-  *          application/json:
-  *            schema:
-  *               $ref: '#/components/schemas/post'
-  *     responses:
-  *          201:
-  *            description: The article was updated
-  *            content:
-  *              application/json:
-  *               schema:
-  *                 $ref: '#/components/schemas/post'
-  *          404:
-  *            description: The article was not found
-  *          500:
-  *            description: some error happened
-  *          
-  */
+
+  /**
+   * @swagger
+   * /api/post/{id}:
+   *  patch:
+   *    summary: Update Article By Id
+   *    tags: [Articles]
+   *    security:
+   *        - bearerAuth: []
+   *    parameters:
+   *      - in: path
+   *        name: id
+   *        schema:
+   *          type: string
+   *        required: true
+   *        description: Article Id
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            $ref: '#/components/schemas/article'
+   *    responses:
+   *      204:
+   *        description: Article Updated
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/article'
+   *      404:
+   *        description: Article Not Found
+   *      500:
+   *        description: Internal Server Error
+   */
 router.patch('/:id',authMiddleware, modifyArticle);
 
+
 /**
- * @swagger
- * /api/post/{id}:
- *    delete:
- *      summary: Delete The article by id
- *      tags: [ Articles ]
- *      parameters:
- *         - in: path
- *           name: id
- *           schema:
- *             type: string
- *           required: true
- *           description: The article id
- *      responses:
- *          200:
- *            description: The article was deleted 
- *           
- *          400:
- *            description: The article was not found         
- */
+   * @swagger
+   * /api/post/{id}:
+   *  delete:
+   *    summary: Delete Article By Id
+   *    tags: [Articles]
+   *    security:
+   *        - bearerAuth: []
+   *    parameters:
+   *      - in: path
+   *        name: id
+   *        schema:
+   *          type: string
+   *        required: true
+   *        description: Article Id
+   *    requestBody:
+   *      required: true
+   *      content:
+   *        application/json:
+   *          schema:
+   *            $ref: '#/components/schemas/article'
+   *    responses:
+   *      200:
+   *        description: Article Deleted 
+   *        content:
+   *          application/json:
+   *            schema:
+   *              $ref: '#/components/schemas/article'
+   *      404:
+   *        description: Article Not Found
+   *      401:
+   *        description: Unauhtorized
+   */
 router.delete('/:id',authMiddleware, deleteArticle);
 
 

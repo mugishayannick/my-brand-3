@@ -44,12 +44,15 @@ export const signup = async (req, res) => {
   if(emailExists){
       return res.status(400).send('Email already exists');
   }
+  if(req.body.password !== req.body.confirmPassword ){
+      return res.status(400).send('passwords do not match')
+  }
 
    // HASH THE PASSWORD
 
    const salt = await bcrypt.genSalt(10);
    
-   const hashedPassword = await bcrypt.hash(req.body.password, 10);
+   const hashedPassword = await bcrypt.hash(req.body.password, salt);
    
 
    // create a user
@@ -59,6 +62,7 @@ export const signup = async (req, res) => {
        email: req.body.email,
        password: hashedPassword,
        confirmPassword: hashedPassword
+       
    });
 
    try {
@@ -78,39 +82,33 @@ export const signup = async (req, res) => {
 
 
 export const login = async (req, res) => {
+    
    
-
-    const {error}= loginValidation(req.body);
-    if(error){
-        return res.status(400).send(error.details[0].message);
-    }
-
 // check if the email exists
 const user = await User.findOne({email: req.body.email});
 if(!user){
     return res.status(400).send('Email is not found');
+}else {
+    const isPasswordValid = await bcrypt.compare(req.body.password, user.confirmPassword);
+    console.log(isPasswordValid)
+    if(!isPasswordValid){
+        return res.status(400).send('incorrect password');
+    } else {
+        const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
+        res.status(201).send(token);
+
+    }
+
 }
 
 
 
+
 // Password is correct!
-const validPassword = async (password) => {
-    try {
-        return await bcrypt.compare(password, user.password);
-
-    } catch(error) {
-        console.log(error.message);
-        // throw error
-        
-    }
-
-} 
 
 
-// create and assign a token #
-const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-res.send(token);
-} 
+
+
 
 
 
@@ -140,4 +138,4 @@ res.send(token);
 //     }
 //   };
 
-
+}

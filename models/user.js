@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 // import isEmail  from 'validator';
 import bcrypt from 'bcrypt';
 
+
 const userSchema = new mongoose.Schema({
     firstName: {
         type: String,
@@ -74,3 +75,4 @@ try {
 const User = mongoose.model('User', userSchema);
 
 export default User;
+

@@ -45,8 +45,7 @@ export const createMessage = (req, res, next) => {
       Message.findById(id).then(
           (message) => {
             if(!message){
-              res.status(400).json({
-                // error: error,
+              res.status(404).json({
                 message: "Message not found"
                
             });
