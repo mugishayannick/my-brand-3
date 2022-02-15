@@ -1,7 +1,7 @@
 import express from "express";
 import auth from "registry-auth-token";
 const router = express.Router();
-import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle } from "../controllers/article.js";
+import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle, getArticle } from "../controllers/article.js";
 import  {authMiddleware} from "../middleware/auth/index.js";
 
 // Blog CRUD Route 
@@ -176,7 +176,7 @@ router.get('/:id',authMiddleware, getOneArticle);
    *      500:
    *        description: Internal Server Error
    */
-router.patch('/:id',authMiddleware, modifyArticle);
+router.patch('/:id',authMiddleware, getArticle, modifyArticle);
 
 
 /**
