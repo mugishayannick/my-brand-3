@@ -68,8 +68,7 @@ import  {authMiddleware} from "../middleware/auth/index.js";
  * /api/message:
  *      get:
  *          tags: [Messages]
- *          security:
-*             - bearerAuth: []
+ *
  *          summary: Returns A List Of All Messages
  *          responses: 
  *              200:
@@ -81,7 +80,7 @@ import  {authMiddleware} from "../middleware/auth/index.js";
  *                              items: 
  *                                  $ref: '#/components/schemas/Message'
  */
- router.get('/', authMiddleware, getAllMessage);
+ router.get('/', getAllMessage);
 
 
 /**
