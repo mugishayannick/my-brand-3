@@ -61,24 +61,7 @@ export const modifyArticle = async (req, res, next) => {
     } catch (error) {
         res.status(400).json({message: error.message})
     }
-    // const article = Article({
-    //     title: req.body.title,
-    //     content: req.body.content,
-    //     imageUrl: req.body.imageUrl,
-    //     userId: req.body.userId
-    // });
-    
-    // Article.findOne({_id: req.params.id},).then(
-    //     () => {
-    //         res.status(201).json({
-    //             article: 'Article updated successfully'
-    //         });
-    //     }
-    // ).catch(
-    //     (error) => {
-    //         res.status(401).json({ message: error });
-    //     }
-    // );
+   
 };
 
 
@@ -125,21 +108,6 @@ export const getAllArticles= (req, res, next) => {
    
     };
 
-// module.exports.signup = (req, res) => {
-//     res.render('signup')
-// } 
 
 
-// module.exports.login = (req, res) => {
-//     res.render('login')
-// } 
 
-
-// module.exports.signup = (req, res) => {
-//     res.send('new signup')
-// } 
-
-
-// module.exports.login = (req, res) => {
-//     res.send('user login')
-// }    

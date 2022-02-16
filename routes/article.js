@@ -1,7 +1,7 @@
 import express from "express";
-import auth from "registry-auth-token";
+// import auth from "registry-auth-token";
 const router = express.Router();
-import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle, getArticle } from "../controllers/article.js";
+import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle, getArticle} from "../controllers/article.js";
 import  {authMiddleware} from "../middleware/auth/index.js";
 
 // Blog CRUD Route 
@@ -213,6 +213,12 @@ router.patch('/:id',authMiddleware, getArticle, modifyArticle);
    *        description: Unauhtorized
    */
 router.delete('/:id',authMiddleware, deleteArticle);
+
+
+
+ 
+
+
 
 
 

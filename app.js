@@ -8,6 +8,7 @@ import messageRoutes from "./routes/message.js";
 import indexRoute from "./routes/index.js";
 import articleRoutes from "./routes/article.js"
 import auth from './routes/auth.js';
+import cors from 'cors';
 
 
 
@@ -55,6 +56,10 @@ dbConnetion()
 
 // Using Swagger API Documentation
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(apiSpecs))
+
+app.use(cors({
+    origin:"*"
+}) ) 
 
 app.use('/', indexRoute)
 app.use('/api/message',messageRoutes);
