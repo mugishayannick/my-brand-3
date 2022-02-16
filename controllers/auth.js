@@ -95,7 +95,7 @@ if(!user){
         return res.status(400).send('incorrect password');
     } else {
         const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET);
-        res.status(201).send(token);
+        res.status(201).json(token);
 
     }
 
