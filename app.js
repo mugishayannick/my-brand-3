@@ -5,7 +5,7 @@ import Mongoose from "mongoose";
 import swaggerUI from "swagger-ui-express";
 import swaggerJsDoc from "swagger-jsdoc";
 import messageRoutes from "./routes/message.js";
-import indexRoute from "./routes/index.js";
+// import indexRoute from "./routes/index.js";
 import articleRoutes from "./routes/article.js"
 import auth from './routes/auth.js';
 import cors from 'cors';
@@ -61,7 +61,7 @@ app.use(cors({
     origin:"*"
 }) ) 
 
-app.use('/', indexRoute)
+// app.use('/', indexRoute)
 app.use('/api/message',messageRoutes);
 app.use('/api/post',articleRoutes);
 app.use('/api/auth', auth);
