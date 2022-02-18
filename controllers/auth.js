@@ -34,7 +34,7 @@ const handleErrors = (err) => {
 
 
 export const signup = async (req, res) => {
-   // LETS VALIDATE A DATE BEFORE WE MAKE A USER
+ // LETS VALIDATE A DATE BEFORE WE MAKE A USER
 //    const {error}= registerValidation(req.body);
 //    if(error){
 //        return res.status(400).send(error.details[0].message);
