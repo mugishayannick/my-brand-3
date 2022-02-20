@@ -7,14 +7,14 @@ export async function commentArticle (req, res) {
         comment: req.body.comment,
        
       });
-      comm.save(result).then(
+      comm.save().then(
         () => {
             post.findById(re.params.id, (err,post) => {
                 if(err){
                     console.log(err);
                 }else {
                     
-                    post.comment.push(result);
+                    post.comment.push();
                     post.save();
                     console.log('=======comments=======');
                     console.log(post.comments);
