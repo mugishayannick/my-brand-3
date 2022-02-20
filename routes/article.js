@@ -139,7 +139,7 @@ router.post('/', authMiddleware , createArticle);
    *       404:
    *         description: Message not found
    */
-router.get('/:id',authMiddleware, getOneArticle);
+router.get('/:id', authMiddleware, getOneArticle);
 
 
   /**

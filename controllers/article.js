@@ -37,7 +37,7 @@ export const createArticle = (req, res, next) => {
 export const getOneArticle =(req, res, next) => {
     Article.findOne({
         _id: req.params.id
-    }).then(
+    }).populate('comments').exec .then(
         (article) => {
                 res.status(200).json(article)
         }
