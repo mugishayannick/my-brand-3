@@ -26,7 +26,8 @@ const options = {
             version: "1.0.0",
             description: "This API Will Manage:\n 1. CRUD Operations For The Blog & Message Querries.\n 2. User Roles, User Authentication & Authorisation"
         },
-        servers:[{url: 'http://localhost:8000'},{url: 'https://personal-portofolio1.herokuapp.com/'}]
+        servers:[{url: 'http://localhost:8000'},{url: 'https://personal-portofolio1.herokuapp.com/'}],
+        servers:[{http: 'http://localhost:8000'},{http: 'https://personal-portofolio1.herokuapp.com/'}]
     },
     apis: ['./routes/*.js'],
 }
