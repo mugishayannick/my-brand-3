@@ -7,7 +7,7 @@ export async function commentArticle (req, res) {
         comment: req.body.comment,
        
       });
-      comm.save().then(
+      comm.save(comment).then(
         () => {
             post.findById(re.params.id, (err,post) => {
                 if(err){
@@ -15,7 +15,7 @@ export async function commentArticle (req, res) {
                 }else {
                     
                     post.comment.push();
-                    post.save();
+                    post.save(comment);
                     console.log('=======comments=======');
                     console.log(post.comments);
                 }
