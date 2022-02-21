@@ -1,14 +1,14 @@
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 
 
-const commentSchema = new mongoose.Schema({
-    author: String,
-    comment: String
+// const commentSchema = new mongoose.Schema({
+//     author: String,
+//     comment: String
 
-});
+// });
 
-const comment = mongoose.model("comment", commentSchema)
+// const comment = mongoose.model("comment", commentSchema)
 
 
-export default comment;
+// export default comment;

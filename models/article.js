@@ -8,12 +8,12 @@ const articleSchema = new mongoose.Schema({
     content: { type: String},
     imageUrl: { type: String },
     userId: { type: String},
-    comments: [
-        {
-            type:  { type: String},
-            ref:  { type: String},
-        }
-    ]
+    // comments: [
+    //     {
+    //         type:  { type: String},
+    //         ref:  { type: String},
+    //     }
+    // ]
 
 });
 
