@@ -13,6 +13,7 @@ import cors from 'cors';
 
 
 
+
 const app = express()
 app.use(express.json());
 
@@ -64,8 +65,37 @@ app.use(cors({
 }) ) 
 
 // app.use('/', indexRoute)
-app.use('/api/message',messageRoutes);
-app.use('/api/post',articleRoutes);
+app.use('/api/message',messageRoutes), async (req, res) => {
+
+    const uploader = async (path) => await cloudinary.uploads(path, 'Images')
+
+    if(req.method === 'Post')
+    {
+        const urls= []
+
+        const files = req.files
+
+        for(const file of files) {
+            const { path } = file
+
+            const newPath = await uploader(path)
+
+            urls.push(newPath)
+
+            FileSystem.unlinkSync(path)
+        }
+
+        res.status(200).json({
+            message: 'Images Uploaded Successfully',
+            data:urls
+        })
+    }else {
+        res.status(405).json({
+            err:"images not uploaded successfully"
+        })
+    }
+};
+app.use('/api/post', articleRoutes);
 app.use('/api/auth', auth);
 // app.use('/api/comment', commentRoutes)
 
