@@ -65,7 +65,8 @@ app.use(cors({
 }) ) 
 
 // app.use('/', indexRoute)
-app.use('/api/message',messageRoutes), async (req, res) => {
+app.use('/api/message',messageRoutes)
+app.use('/api/post', articleRoutes), async (req, res) => {
 
     const uploader = async (path) => await cloudinary.uploads(path, 'Images')
 
@@ -95,7 +96,6 @@ app.use('/api/message',messageRoutes), async (req, res) => {
         })
     }
 };
-app.use('/api/post', articleRoutes);
 app.use('/api/auth', auth);
 // app.use('/api/comment', commentRoutes)
 
