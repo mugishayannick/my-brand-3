@@ -1,3 +1,4 @@
+import { uploadFile } from "../helpers/fileUpload.js"
 import  Article  from "../models/article.js"
 
 export async function getArticle (req, res, next) {
@@ -12,6 +13,11 @@ export async function getArticle (req, res, next) {
 }
 
 export const createArticle = (req, res, next) => {
+
+    if (req.file) {
+        req.body.imageUrl = uploadFile(req)
+    }
+
     const article =  Article({
       title: req.body.title,
       content: req.body.content,

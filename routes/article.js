@@ -1,7 +1,18 @@
 import express from "express";
-const router = express.Router();
+import multer from "multer";
+
 import { getAllArticles, createArticle,getOneArticle,modifyArticle,deleteArticle, getArticle} from "../controllers/article.js";
+import { fileFilter } from "../helpers/fileFilter.js";
 import  {authMiddleware} from "../middleware/auth/index.js";
+
+
+
+const router = express.Router();
+const storageFile = multer.diskStorage({})
+const upload = multer({
+   storage: storageFile,
+   file: fileFilter
+})
 
 // Blog CRUD Route 
 /**
@@ -112,7 +123,7 @@ router.get('/', getAllArticles);
    *         description: Server Error
    */
 
-router.post('/', authMiddleware , createArticle);
+router.post('/', authMiddleware, upload.single('image') , createArticle);
 
   /**
    * @swagger
