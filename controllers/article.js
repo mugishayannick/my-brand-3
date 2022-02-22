@@ -1,4 +1,4 @@
-import { uploadFile } from "../helpers/fileUpload.js"
+
 import  Article  from "../models/article.js"
 
 export async function getArticle (req, res, next) {
@@ -14,9 +14,8 @@ export async function getArticle (req, res, next) {
 
 export const createArticle = (req, res, next) => {
 
-    if (req.file) {
-        req.body.imageUrl = uploadFile(req)
-    }
+    const result = cloudinary.uploader.upload(req.file.path)
+    res.json(result)
 
     const article =  Article({
       title: req.body.title,
