@@ -67,7 +67,7 @@ app.use(cors({
 app.use('/api/message',messageRoutes);
 app.use('/api/post',articleRoutes);
 app.use('/api/auth', auth);
-// app.use('/api/comment', commentRoutes)
+app.use('/api/comment', commentRoutes)
 
 
 
