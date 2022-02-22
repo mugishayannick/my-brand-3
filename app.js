@@ -7,7 +7,7 @@ import swaggerJsDoc from "swagger-jsdoc";
 import messageRoutes from "./routes/message.js";
 // import indexRoute from "./routes/index.js";
 import articleRoutes from "./routes/article.js"
-// import commentRoutes from "./routes/comment.js"
+import commentRoutes from "./routes/comment.js"
 import auth from './routes/auth.js';
 import cors from 'cors';
 
